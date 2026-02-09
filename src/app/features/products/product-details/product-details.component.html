@@ -1,0 +1,27 @@
+<h2>Product details</h2>
+
+<!-- {{ product()?.id }} -->
+<!-- {{ product()?.name }} -->
+
+@if (state(); as s) {
+  <!--@if (loading()) {-->
+  @if (s.status === 'loading') {
+    <div class="loading">
+      Loading... (delay 1000 ms with reactive RxJS signals and pipe)
+    </div>
+  <!--} @if (product(); as product) {-->
+  } @else if (s.status === 'success') {
+    <div class="product-details">
+      <!-- *ngIf="product() as product" DEPRECATED: *ngIf deprecated in Angular 17+ -->
+      <h3>{{ s.data.name }}
+        <small>({{ s.data.categoryName }})</small></h3>
+      <p>{{ s.data.description }}</p>
+      <!--strong>{{ product.price }} Ft</strong-->
+      <strong>{{ s.data.formattedPrice }}</strong>
+    </div>
+  } @else {
+    <div class="error">
+      Product not found!
+    </div>
+  }
+}

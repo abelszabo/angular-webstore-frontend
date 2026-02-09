@@ -19,6 +19,7 @@ div.product-details {
   line-height: 1rem;
 }
 
-li {
-  padding: 0.5rem 0;
+div.error {
+  font-size: 1.6rem;
+  color: red;
 }

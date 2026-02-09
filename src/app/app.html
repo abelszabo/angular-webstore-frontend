@@ -2,6 +2,15 @@
   <h1>{{ title() }}</h1>
 </header>
 
+<nav class="menu">
+  <button [routerLink]="['/main-page']">
+    FŐOLDAL
+  </button>
+  <button [routerLink]="['/products']">
+    TERMÉKEK
+  </button>
+</nav>
+
 <main class="content">
   <router-outlet />
 </main>

@@ -1,0 +1,9 @@
+<h2>Termék adatok</h2>
+
+  <div class="product-details" *ngIf="product() as product">
+    <!-- _common_module-chunk.d.ts(824, 8): The declaration was marked as deprecated here. -->
+    <h3>{{ product.name }} <small>({{ product.categoryName }})</small></h3>
+    <p>{{ product.description }}</p>
+    <strong>{{ product.price }} Ft</strong>
+  </div>
+

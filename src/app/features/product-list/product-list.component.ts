@@ -4,14 +4,14 @@ import { ProductService } from '../../core/product.service';
 import { Product } from '../../core/product.model';
 
 @Component({
-  selector: 'app-products',
+  selector: 'app-product-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './products.html',
-  styleUrl: './products.css',
+  templateUrl: './product-list.component.html',
+  styleUrl: './product-list.component.css',
 })
 
-export class Products {
+export class ProductListComponent {
   // products = signal([
   //   { id: 1, name: 'Laptop', price: 399000 },
   //   { id: 2, name: 'Headphones', price: 59000 },
@@ -21,7 +21,7 @@ export class Products {
   products = signal<Product[]>([]);
 
   constructor(private productService: ProductService) {
-    this.productService.getAll().subscribe(data => {
+    this.productService.getProductList().subscribe(data => {
       this.products.set(data);
     });
   }

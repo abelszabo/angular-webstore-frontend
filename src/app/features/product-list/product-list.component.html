@@ -1,4 +1,4 @@
-<h2>Terméklista</h2>
+<h2>Termékek</h2>
 
 <!--<ul>-->
 <!--  @for (product of products(); track product.id) {-->
@@ -9,8 +9,8 @@
 <!--</ul>-->
 
 @for (p of products(); track p.id) {
-  <div class="product-details">
-    <h3>{{ p.name }} <small>({{ p.categoryName }})</small></h3>
+  <div class="product-list-item">
+    <h3><a href="/products/{{p.id}}">{{ p.name }} <small>({{ p.categoryName }})</small></a></h3>
     <p>{{ p.description }}</p>
     <strong>{{ p.price }} Ft</strong>
   </div>

@@ -1,0 +1,30 @@
+h2 {
+  margin-bottom: 1rem;
+}
+
+h3 {
+  margin-top: 0;
+  background-color: cornflowerblue;
+}
+
+h3>small {
+  font-size: 0.8rem;
+  color: aquamarine;
+}
+
+h3>a {
+  text-decoration: none;
+}
+
+div.product-list-item {
+  background-color: aquamarine;
+  margin: 0.2rem;
+  padding: 0.2rem;
+  line-height: 1rem;
+
+  display: inline-block;
+}
+
+li {
+  padding: 0.5rem 0;
+}

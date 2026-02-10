@@ -19,6 +19,10 @@
       <!--strong>{{ product.price }} Ft</strong-->
       <strong>{{ s.data.formattedPrice }}</strong>
     </div>
+  } @else if (s.status === 'timeout') {
+    <div class="error">
+      Internal server error!
+    </div>
   } @else {
     <div class="error">
       Product not found!

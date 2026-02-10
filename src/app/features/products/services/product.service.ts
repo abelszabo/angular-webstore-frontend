@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Product} from './product.model';
+import {Product} from '../models/product.model';
 import { map } from 'rxjs/operators';
-import {ExtendedProductModel} from './product-extended.model';
+import {ProductItemModel} from '../models/product-item.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -18,7 +18,7 @@ export class ProductService {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
-  getExtendedProductById(id: number) {
+  getProductItemById(id: number) {
     // return this.http.get<Product>(`${this.apiUrl}/${id}`).pipe(
     //   map(p => new ExtendedProductModel(
     //     p.id,
@@ -29,7 +29,7 @@ export class ProductService {
     //   ))
     // );
 
-    return this.http.get<Product>(`${this.apiUrl}/${id}`).pipe(map(ExtendedProductModel.fromDto));
+    return this.http.get<Product>(`${this.apiUrl}/${id}`).pipe(map(ProductItemModel.fromDto));
   }
 }
 

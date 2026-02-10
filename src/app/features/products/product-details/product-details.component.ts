@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {catchError, delay, map, startWith, switchMap, tap} from 'rxjs/operators';
+import {catchError, delay, map, startWith, switchMap, tap, timeout} from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../../core/product.service';
-import { Product } from '../../../core/product.model';
-import {ExtendedProductModel} from '../../../core/product-extended.model';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/product.model';
+import {ProductItemModel} from '../models/product-item.model';
 
 @Component({
   selector: 'app-product-details',
@@ -54,17 +54,24 @@ export class ProductDetailsComponent {
       //switchMap(id => of(createEmptyProduct()))
       //switchMap(id => createTheEmptyProduct(id))
       //switchMap(id => this.productService.getProductById(id))
-      switchMap(id => this.productService.getExtendedProductById(id)
+      switchMap(id => this.productService.getProductItemById(id)
         .pipe(
           delay(1000),
+          timeout(3000),
           //tap(() => this.loading.set(false)),
           map(product => ({ status: 'success', data: product }) as ProductState),
           startWith({ status: 'loading' } as ProductState),
-          catchError(() => of({ status: 'error' } as ProductState))
+          //catchError(() => of({ status: 'error' } as ProductState))
           // catchError(() => {
           //   this.loading.set(false);
           //   return of(null);
           // })
+          catchError(err => {
+            if (err.name === 'TimeoutError') {
+              return of({ status: 'timeout' } as ProductState);
+            }
+            return of({ status: 'error' } as ProductState);
+          })
         )
       )
     ),
@@ -75,8 +82,9 @@ export class ProductDetailsComponent {
 
 export type ProductState =
   | { status: 'loading' }
-  | { status: 'success'; data: ExtendedProductModel }
-  | { status: 'error' };
+  | { status: 'success'; data: ProductItemModel }
+  | { status: 'error' }
+  | { status: 'timeout' };
 
 export function createEmptyProduct(): Product {
   return {

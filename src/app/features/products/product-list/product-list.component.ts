@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../../../core/product.service';
+import { ProductService } from '../services/product.service';
 // import { Product } from '../../../core/product.model';
 import {toSignal} from '@angular/core/rxjs-interop';
 

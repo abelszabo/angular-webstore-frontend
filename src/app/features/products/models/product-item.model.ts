@@ -1,6 +1,6 @@
 import {Product} from './product.model';
 
-export class ExtendedProductModel {
+export class ProductItemModel {
   constructor(
     public id: number,
     public name: string,
@@ -9,8 +9,8 @@ export class ExtendedProductModel {
     public categoryName: string
   ) {}
 
-  static fromDto(p: Product): ExtendedProductModel {
-    return new ExtendedProductModel(
+  static fromDto(p: Product): ProductItemModel {
+    return new ProductItemModel(
       p.id,
       p.name,
       p.description,

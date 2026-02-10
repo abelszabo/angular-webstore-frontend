@@ -6,6 +6,8 @@ import {SessionService} from '../../../core/services/session.service';
 import {EMPTY, exhaustMap, finalize, Observable, of, Subject, throwError} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {catchError, delay, switchMap, tap} from 'rxjs/operators';
+import {ProductItemModel} from '../../products/models/product-item.model';
+import {OrderItem} from '../models/order-item.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
@@ -18,24 +20,55 @@ export class OrderService {
   private createOrderProcessingSignal = signal(false);
   readonly isCreateOrderProcessing = this.createOrderProcessingSignal.asReadonly();
 
+  private addToCart$ = new Subject<OrderItem>();
+
   constructor(private http: HttpClient) {
     this.createOrder$.pipe(
       //switchMap(() => this.newOrderObservable()),
       exhaustMap(() => {
         this.createOrderProcessingSignal.set(true);
+        console.log("CREATING ORDER...");
         return this.newOrderObservable().pipe(
           delay(1000),
-          finalize(() => this.createOrderProcessingSignal.set(false)))
+          tap(result => {
+            console.log('Order created:', result);
+            this.sessionService.set(this.ORDER_NUMBER_KEY, result.orderNumber);
+          }),
+          catchError(err => {
+            console.error(err);
+            this.sessionService.remove(this.ORDER_NUMBER_KEY);
+            return EMPTY;
+            //throw err;
+          }),
+          finalize(() => this.createOrderProcessingSignal.set(false)),
+        );
       }),
-      //delay(1000),
-      tap(result => {
-        console.log('Order created:', result);
-        this.sessionService.set(this.ORDER_NUMBER_KEY, result.orderNumber);
-      }),
-      catchError(err => {
-        console.error(err);
-        this.sessionService.remove(this.ORDER_NUMBER_KEY);
-        return EMPTY;
+      takeUntilDestroyed()
+    ).subscribe();
+
+    this.addToCart$.pipe(exhaustMap(orderItem => {
+        console.log("ADDING ORDER ITEM TO CARTxxx...");
+        // const orderItem : OrderItem = {
+        //   //orderNumber: "asdf",
+        //   orderNumber: "ORDER-1234",
+        //   productId: 1,
+        //   quantity: 5
+        // };
+        console.log('Adding item to cart: orderNumber = ' + orderItem.orderNumber
+          + ', productId = ' + orderItem.productId
+          + ', quantity = ' + orderItem.quantity);
+
+        return this.http.post<void>(`${this.apiUrl}/add-item`, orderItem).pipe(
+          tap(result => {
+            console.log('Item added');
+          }),
+          catchError(err => {
+            console.error(err);
+            return EMPTY;
+          }),
+          finalize(() => {
+          }),
+        )
       }),
       takeUntilDestroyed()
     ).subscribe();
@@ -82,8 +115,24 @@ export class OrderService {
     this.createOrder$.next();
   }
 
-  getOrderNumber() {
-    const orderNumber = this.sessionService.get<String>(this.ORDER_NUMBER_KEY);
+  getOrderNumber():string {
+    const orderNumber = this.sessionService.get<string>(this.ORDER_NUMBER_KEY);
     console.log('Order number:', orderNumber);
+    if (!orderNumber) {
+       return '';
+    }
+    return orderNumber;
+  }
+
+  addToCart(productItemModel : ProductItemModel) {
+    console.log('Adding item to cart, productId = ' + productItemModel.id);
+
+    const orderItem : OrderItem = {
+      orderNumber: this.getOrderNumber(),
+      productId: productItemModel.id,
+      quantity: 1
+    };
+
+    this.addToCart$.next(orderItem);
   }
 }

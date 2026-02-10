@@ -9,14 +9,21 @@
 <!--</ul>-->
 
 @for (p of products(); track p.id) {
-  <div class="product-list-item">
-    <h3>
-      <!--a href="/products/{{p.id}}">{{ p.name }} <small>({{ p.categoryName }})</small></a-->
-      <!--a routerLink="/products/{{p.id}}">{{ p.name }} <small>({{ p.categoryName }})</small></a-->
-      <!--a [routerLink]="['/products/' + p.id]">{{ p.name }} <small>({{ p.categoryName }})</small></a-->
-      <a [routerLink]="['/products/', p.id]">{{ p.name }} <small>({{ p.categoryName }})</small></a>
-    </h3>
-    <p>{{ p.description }}</p>
-    <strong>{{ p.price }} Ft</strong>
-  </div>
+  <app-product-item [product]="p" />
 }
+
+@if (false) {
+  @for (p of products(); track p.id) {
+    <div class="product-list-item">
+      <h3>
+        <!--a href="/products/{{p.id}}">{{ p.name }} <small>({{ p.categoryName }})</small></a-->
+        <!--a routerLink="/products/{{p.id}}">{{ p.name }} <small>({{ p.categoryName }})</small></a-->
+        <!--a [routerLink]="['/products/' + p.id]">{{ p.name }} <small>({{ p.categoryName }})</small></a-->
+        <a [routerLink]="['/products/', p.id]">{{ p.name }} <small>({{ p.categoryName }})</small></a>
+      </h3>
+      <p>{{ p.description }}</p>
+      <strong>{{ p.formattedPrice }}</strong>
+    </div>
+  }
+}
+

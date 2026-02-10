@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.model';
 import {ProductItemModel} from '../models/product-item.model';
+import {ProductItemComponent} from '../components/product-item/product-item.component';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProductItemComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
@@ -56,7 +57,7 @@ export class ProductDetailsComponent {
       //switchMap(id => this.productService.getProductById(id))
       switchMap(id => this.productService.getProductItemById(id)
         .pipe(
-          delay(1000),
+          delay(100),
           timeout(3000),
           //tap(() => this.loading.set(false)),
           map(product => ({ status: 'success', data: product }) as ProductState),

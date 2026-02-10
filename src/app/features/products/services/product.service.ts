@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Product} from '../models/product.model';
 import { map } from 'rxjs/operators';
 import {ProductItemModel} from '../models/product-item.model';
+import {Observable} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -12,6 +13,14 @@ export class ProductService {
 
   getProductList() {
     return this.http.get<Product[]>(this.apiUrl);
+  }
+
+  getProductItemList(): Observable<ProductItemModel[]> {
+    return this.http.get<Product[]>(this.apiUrl).pipe(
+      map(products=>
+        products.map(ProductItemModel.fromDto)
+      )
+    );
   }
 
   getProductById(id: number) {

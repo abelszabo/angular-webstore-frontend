@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { ProductService } from '../services/product.service';
 // import { Product } from '../../../core/product.model';
 import {toSignal} from '@angular/core/rxjs-interop';
+import {ProductItemComponent} from '../components/product-item/product-item.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ProductItemComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
 })
@@ -31,7 +32,7 @@ export class ProductListComponent {
   private productService = inject(ProductService);
 
   products = toSignal(
-    this.productService.getProductList(),
+    this.productService.getProductItemList(),
     { initialValue: null }
   );
 }

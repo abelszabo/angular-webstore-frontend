@@ -5,6 +5,7 @@ import { ProductService } from '../services/product.service';
 // import { Product } from '../../../core/product.model';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ProductItemComponent} from '../components/product-item/product-item.component';
+import {OrderService} from '../../order/services/order.service';
 
 @Component({
   selector: 'app-product-list',
@@ -30,11 +31,16 @@ export class ProductListComponent {
   // }
 
   private productService = inject(ProductService);
+  private orderService = inject(OrderService);
 
   products = toSignal(
     this.productService.getProductItemList(),
     { initialValue: null }
   );
+
+  getOrderNumber() {
+    this.orderService.getOrderNumber();
+  }
 }
 
 

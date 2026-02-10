@@ -14,3 +14,10 @@ Praesent lobortis, risus sit amet maximus congue, lorem est ornare leo, sed plac
 <p>
 Curabitur et laoreet libero, vel euismod sapien. Donec sollicitudin porttitor condimentum. Nullam at condimentum massa. Vivamus a pulvinar est. Fusce a diam at est gravida maximus. Cras quis sapien ut erat porta semper. Proin nec porttitor est. Mauris viverra orci ornare, lobortis urna iaculis, faucibus nunc. Vivamus suscipit vel ante nec semper.
 </p>
+<hr/>
+<button (click)="newOrder()"  [disabled]="isCreateOrderProcessing()">
+  New Order
+</button>
+<button (click)="getOrderNumber()">
+  Get Order Number
+</button>

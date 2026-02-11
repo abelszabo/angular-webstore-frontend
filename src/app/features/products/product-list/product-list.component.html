@@ -8,12 +8,12 @@
 <!--  }-->
 <!--</ul>-->
 
-@for (p of products(); track p.id) {
+@for (p of productList(); track p.id) {
   <app-product-item [product]="p" />
 }
 
 @if (false) {
-  @for (p of products(); track p.id) {
+  @for (p of productList(); track p.id) {
     <div class="product-list-item">
       <h3>
         <!--a href="/products/{{p.id}}">{{ p.name }} <small>({{ p.categoryName }})</small></a-->
@@ -28,6 +28,9 @@
 }
 
 <hr/>
+<button (click)="loadProducts()">
+  Reload Products
+</button>
 <button (click)="getOrderNumber()">
   Get Order Number
 </button>

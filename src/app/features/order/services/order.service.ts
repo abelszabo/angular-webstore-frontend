@@ -47,7 +47,7 @@ export class OrderService {
     ).subscribe();
 
     this.addToCart$.pipe(exhaustMap(orderItem => {
-        console.log("ADDING ORDER ITEM TO CARTxxx...");
+        console.log("ADDING ORDER ITEM TO CART...");
         // const orderItem : OrderItem = {
         //   //orderNumber: "asdf",
         //   orderNumber: "ORDER-1234",

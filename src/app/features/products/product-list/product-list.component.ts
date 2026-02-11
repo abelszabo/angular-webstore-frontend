@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../services/product.service';
@@ -6,6 +6,7 @@ import { ProductService } from '../services/product.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ProductItemComponent} from '../components/product-item/product-item.component';
 import {OrderService} from '../../order/services/order.service';
+import {ProductItemModel} from '../models/product-item.model';
 
 @Component({
   selector: 'app-product-list',
@@ -33,10 +34,25 @@ export class ProductListComponent {
   private productService = inject(ProductService);
   private orderService = inject(OrderService);
 
-  products = toSignal(
-    this.productService.getProductItemList(),
-    { initialValue: null }
-  );
+  readonly productList = this.productService.productList;
+  //readonly productList = this.productService.loadProducts();
+  //readonly productList = this.load();
+
+  /*_products = toSignal(
+    this.productService._getProductItemList(),
+    //{ initialValue: null }
+    { initialValue: [] }
+  );*/
+
+  ngOnInit() {
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    //this.productService.getProductItemList(this.products);
+    //return this.productService.loadProducts();
+    this.productService.loadProducts();
+  }
 
   getOrderNumber() {
     this.orderService.getOrderNumber();

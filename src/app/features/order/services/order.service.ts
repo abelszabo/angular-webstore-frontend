@@ -3,9 +3,20 @@ import {HttpClient} from '@angular/common/http';
 import {Product} from '../../products/models/product.model';
 import {Order} from '../models/order.model';
 import {SessionService} from '../../../core/services/session.service';
-import {EMPTY, exhaustMap, finalize, Observable, of, Subject, throwError} from 'rxjs';
+import {
+  auditTime,
+  distinctUntilChanged,
+  EMPTY,
+  exhaustMap,
+  finalize,
+  Observable,
+  of,
+  Subject,
+  throttleTime,
+  throwError
+} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {catchError, delay, switchMap, tap} from 'rxjs/operators';
+import {catchError, debounceTime, delay, map, switchMap, tap} from 'rxjs/operators';
 import {ProductItemModel} from '../../products/models/product-item.model';
 import {OrderItem} from '../models/order-item.model';
 
@@ -24,6 +35,10 @@ export class OrderService {
 
   constructor(private http: HttpClient) {
     this.createOrder$.pipe(
+      debounceTime(200),
+      throttleTime(500),
+      //auditTime(1000),
+      //distinctUntilChanged(),
       //switchMap(() => this.newOrderObservable()),
       exhaustMap(() => {
         this.createOrderProcessingSignal.set(true);

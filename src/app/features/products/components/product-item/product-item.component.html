@@ -10,4 +10,8 @@
   <strong>{{ product.formattedPrice }}</strong>
 
   <button (click)="addItem()">Add to cart</button>
+
+  <div stlye="display:none">
+    {{ product | doublePrice }}
+  </div>
 </div>

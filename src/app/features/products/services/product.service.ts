@@ -1,10 +1,11 @@
 import {Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Product} from '../models/product.model';
-import {catchError, map, tap} from 'rxjs/operators';
+import {catchError, debounceTime, map, tap, timeout} from 'rxjs/operators';
 import {ProductItemModel} from '../models/product-item.model';
 import {EMPTY, finalize, Observable, of} from 'rxjs';
 import {ProductState} from '../product-details/product-details.component';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -77,6 +78,7 @@ export class ProductService {
     console.log("Loading products...");
 
     this.http.get<Product[]>(this.apiUrl).pipe(
+      timeout(5000),
       map(products => products.map(ProductItemModel.fromDto)),
       finalize(() => this.loading.set(false))
     ).subscribe({
@@ -90,6 +92,25 @@ export class ProductService {
 
     //return this.products.asReadonly()
     //return this.productList;
+  }
+
+  getProductsSignal() {
+    this.loading.set(true);
+    console.log("Loading products with signal...");
+
+    return toSignal(this.http.get<Product[]>(this.apiUrl).pipe(
+        timeout(5000),
+        map(products => products.map(ProductItemModel.fromDto)),
+        catchError(err => {
+          console.log("Cannot load products: " + err);
+          this.error.set(err);
+          return EMPTY;
+        }),
+        finalize(() => {
+          console.log("finalize");
+          this.loading.set(false)
+        })),
+      { initialValue: [] });
   }
 
   getProductById(id: number) {

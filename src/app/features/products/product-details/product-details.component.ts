@@ -68,6 +68,7 @@ export class ProductDetailsComponent {
           //   return of(null);
           // })
           catchError(err => {
+            console.error("Error while loading product item: " + err.status + " - " + err.name);
             if (err.name === 'TimeoutError') {
               return of({ status: 'timeout' } as ProductState);
             }

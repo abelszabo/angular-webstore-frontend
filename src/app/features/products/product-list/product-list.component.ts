@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, Signal, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../services/product.service';
@@ -34,9 +34,10 @@ export class ProductListComponent {
   private productService = inject(ProductService);
   private orderService = inject(OrderService);
 
-  readonly productList = this.productService.productList;
   //readonly productList = this.productService.loadProducts();
   //readonly productList = this.load();
+  //productList = this.productService.getProductsSignal();
+  readonly productList = this.productService.productList;
 
   /*_products = toSignal(
     this.productService._getProductItemList(),
@@ -46,12 +47,18 @@ export class ProductListComponent {
 
   ngOnInit() {
     this.loadProducts();
+
+    // ERROR RuntimeError: NG0203: toSignal() can only be used within an injection context such as a constructor,
+    // a factory function, a field initializer, or a function used with `runInInjectionContext`.
+    // Find more at https://v21.angular.dev/errors/NG0203
+    // this.productList = this.productService.getProductsSignal();
   }
 
   loadProducts() {
     //this.productService.getProductItemList(this.products);
     //return this.productService.loadProducts();
     this.productService.loadProducts();
+    //this.productList = this.productService.productList;
   }
 
   getOrderNumber() {

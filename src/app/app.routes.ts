@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import {MainPageComponent} from './features/main-page/main-page.component';
+import {RegisterUserComponent} from './features/user-management/register-user/register-user.component';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,12 @@ export const routes: Routes = [
     //   import('./features/main-page/main-page.component')
     //     .then(m => m.MainPageComponent)
     component: MainPageComponent
+  },
+  {
+    path: 'register-user',
+    loadComponent: () =>
+      import('./features/user-management/register-user/register-user.component')
+        .then(m => m.RegisterUserComponent)
   },
   {
     path: 'products',

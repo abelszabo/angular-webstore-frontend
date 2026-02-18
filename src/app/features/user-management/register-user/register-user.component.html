@@ -1,0 +1,33 @@
+<h2>Register User</h2>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+  <div>
+    <label>Email:</label>
+    <input type="email" formControlName="email" />
+    <div *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.touched">
+      Invalid email
+    </div>
+  </div>
+
+  <div>
+    <label>Username:</label>
+    <input type="text" formControlName="username" />
+    <div *ngIf="registerForm.controls.username.invalid && registerForm.controls.username.touched">
+      Username must be at least 3 characters
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="registerForm.invalid">
+    Register
+  </button>
+
+</form>
+
+<div *ngIf="successMessage" style="color: green;">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" style="color: red;">
+  {{ errorMessage }}
+</div>

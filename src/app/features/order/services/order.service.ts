@@ -18,7 +18,8 @@ import {
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {catchError, debounceTime, delay, map, switchMap, tap} from 'rxjs/operators';
 import {ProductItemModel} from '../../products/models/product-item.model';
-import {OrderItem} from '../models/order-item.model';
+import {OrderItemRequest} from '../models/order-item-request.model';
+import {OrderItemResponse} from '../models/order-item-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
@@ -31,7 +32,7 @@ export class OrderService {
   private createOrderProcessingSignal = signal(false);
   readonly isCreateOrderProcessing = this.createOrderProcessingSignal.asReadonly();
 
-  private addToCart$ = new Subject<OrderItem>();
+  private addToCart$ = new Subject<OrderItemRequest>();
 
   constructor(private http: HttpClient) {
     this.createOrder$.pipe(
@@ -73,9 +74,10 @@ export class OrderService {
           + ', productId = ' + orderItem.productId
           + ', quantity = ' + orderItem.quantity);
 
-        return this.http.post<void>(`${this.apiUrl}/add-item`, orderItem).pipe(
+        return this.http.post<OrderItemResponse>(`${this.apiUrl}/item`, orderItem).pipe(
           tap(result => {
-            console.log('Item added');
+            console.log('Item added: ' + result.status + ", product id: " + result.productId
+              + ", quantity in cart: " + result.quantity);
           }),
           catchError(err => {
             console.error(err);
@@ -142,7 +144,7 @@ export class OrderService {
   addToCart(productItemModel : ProductItemModel) {
     console.log('Adding item to cart, productId = ' + productItemModel.id);
 
-    const orderItem : OrderItem = {
+    const orderItem : OrderItemRequest = {
       orderNumber: this.getOrderNumber(),
       productId: productItemModel.id,
       quantity: 1

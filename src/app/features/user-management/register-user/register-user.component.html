@@ -5,7 +5,8 @@
   <div>
     <label>Email:</label>
     <input type="email" formControlName="email" />
-    <div *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.touched">
+<!--    <div *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">-->
+    <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
       Invalid email
     </div>
   </div>
@@ -13,12 +14,13 @@
   <div>
     <label>Username:</label>
     <input type="text" formControlName="username" />
-    <div *ngIf="registerForm.controls.username.invalid && registerForm.controls.username.touched">
+<!--    <div *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched">-->
+    <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
       Username must be at least 3 characters
     </div>
   </div>
 
-  <button type="submit" [disabled]="registerForm.invalid">
+  <button type="submit" [disabled]="registerForm.invalid || loading">
     Register
   </button>
 

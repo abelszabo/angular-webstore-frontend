@@ -6,30 +6,44 @@
     <label>Email:</label>
     <input type="email" formControlName="email" />
 <!--    <div *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">-->
-    <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
-      Invalid email
-    </div>
+<!--    <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">-->
+    @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+      <p style="color:red">Invalid email</p>
+    }
+<!--    </div>-->
   </div>
 
   <div>
     <label>Username:</label>
     <input type="text" formControlName="username" />
 <!--    <div *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched">-->
-    <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
-      Username must be at least 3 characters
-    </div>
+<!--    <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">-->
+    @if (registerForm.controls.username.touched && registerForm.controls.username.invalid) {
+      <p style="color:red">Username must be at least 3 characters</p>
+    }
+<!--    </div>-->
   </div>
 
-  <button type="submit" [disabled]="registerForm.invalid || loading">
-    Register
+  <button type="submit" [disabled]="submitting() || registerForm.invalid">
+    @if (submitting()) {
+      Registering...
+    } @else {
+      Register
+    }
   </button>
 
 </form>
 
-<div *ngIf="successMessage" style="color: green;">
+<!--div *ngIf="successMessage" style="color: green;">
   {{ successMessage }}
-</div>
+</div-->
+@if (successMessage()) {
+  <p style="color:green">{{ successMessage() }}</p>
+}
 
-<div *ngIf="errorMessage" style="color: red;">
+<!--div *ngIf="errorMessage" style="color: red;">
   {{ errorMessage }}
-</div>
+</div-->
+@if (errorMessage()) {
+  <p style="color:red">{{ errorMessage() }}</p>
+}

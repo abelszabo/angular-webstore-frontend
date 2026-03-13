@@ -22,6 +22,18 @@ export const routes: Routes = [
         .then(m => m.RegisterUserComponent)
   },
   {
+    path: 'login-page',
+    loadComponent: () =>
+      import('./auth/login/login.component')
+        .then(m => m.LoginComponent)
+  },
+  {
+    path: 'login-callback',
+    loadComponent: () =>
+      import('./auth/callback/callback.component')
+        .then(m => m.CallbackComponent)
+  },
+  {
     path: 'products',
     loadComponent: () =>
       import('./features/products/product-list/product-list.component')
